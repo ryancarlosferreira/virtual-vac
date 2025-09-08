@@ -4,7 +4,7 @@ type InputProps = React.ComponentProps<"input"> & {
 
 export function Input({ children, ...props }: InputProps) {
   return (
-    <div className="inline-flex items-center w-100 h-12 gap-2 bg-amber-50 text-black rounded-lg shadow-lg">
+    <div className="inline-flex items-center w-auto h-auto gap-2 bg-amber-50 text-black rounded-lg shadow-lg">
       {children}
       <input className="outline-none" {...props} />
     </div>
