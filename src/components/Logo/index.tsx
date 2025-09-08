@@ -6,6 +6,7 @@ export function Logo() {
         Virtual
       </p>
       <Image
+        priority
         src="/logo.png"
         alt="Logo do site"
         width={200}
