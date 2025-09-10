@@ -5,7 +5,7 @@ import { AuthLink } from "@/components/AuthLink";
 
 export default function Home() {
   return (
-    <div className="flex flex-col sm:flex-row w-screen h-screen justify-center items-center bg-gradient-to-b from-green-400 to-white gap-6 sm:gap-10">
+    <div className="flex flex-col w-screen h-screen justify-center items-center bg-gradient-to-b from-green-400 to-white gap-6 ">
       <div>
         <Logo />
       </div>
