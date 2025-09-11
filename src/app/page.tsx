@@ -1,5 +1,3 @@
-
-
 import { Mail, LockKeyhole } from "lucide-react";
 
 import { Input } from "@/components/Input";
@@ -35,4 +33,3 @@ export default function Home() {
     </div>
   );
 }
-// onClick={() => router.push("/forgot")} // colocar isso daqui no button, pesquisar sobre
