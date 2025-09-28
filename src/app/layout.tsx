@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Site de status de carteira de vacinação",
 };
 
+export const viewport = "width=device-width, initial-scale=1";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -14,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased w-screen h-screen bg-gradient-to-b from-green-200 via-white to-green-100`}
+        className={`antialiased`}
       >
         {children}
       </body>

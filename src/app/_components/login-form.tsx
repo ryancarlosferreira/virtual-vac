@@ -9,34 +9,36 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useHookFormMask } from "use-mask-input";
+import { Eye, EyeOff, Loader } from "lucide-react";
 
 import { LoginData, loginSchema } from "@/app/_validators/login-validators";
 
-import { Eye, EyeOff } from "lucide-react";
-
 export default function LoginForm() {
-  const router = useRouter();
+  //const router = useRouter();
+  //router.replace("/dashboard");
 
-  const form = useForm<LoginData>({
+  const {
+    handleSubmit,
+    register,
+    watch,
+    formState: { isSubmitting, errors },
+  } = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
   });
 
+  const registerWithMask = useHookFormMask(register);
+
   const onSubmit = (data: LoginData) => {
-      console.log("Dados validados:", data);
-    };
+    console.log("Dados validados:", data);
+  };
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  /* função para validar login futuramente
-  async function login() {
-    router.replace("/dashboard");
-  }
-  */
-
   return (
     <form
-      onSubmit={form.handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col items-center gap-2 w-full max-w-sm p-4"
     >
       <p className="text-cyan-600 font-bold text-2xl mb-2">Login</p>
@@ -45,11 +47,18 @@ export default function LoginForm() {
         <Label htmlFor="cpf" className="mb-1 text-cyan-600">
           CPF:
         </Label>
-        <Input type="text" id="cpf" {...form.register("cpf")} />
-        {form.formState.errors.password && (
-          <p className="text-red-500 text-sm">
-            {form.formState.errors.cpf?.message}
-          </p>
+        <Input
+          id="cpf"
+          type="text"
+          {...registerWithMask("cpf", "999.999.999-99", {
+            required: "O CPF é obrigatório",
+          })}
+          className="border border-green-300
+          focus:border-green-400 focus:ring-2 focus:ring-green-200
+          hover:border-green-400"
+        />
+        {errors.cpf && (
+          <p className="text-red-500 mt-1 text-xs">{errors.cpf.message}</p>
         )}
       </div>
 
@@ -59,9 +68,22 @@ export default function LoginForm() {
         </Label>
         <div className="relative">
           <Input
-            type={isPasswordVisible ? "text" : "password"}
             id="password"
-            {...form.register("password")}
+            type={isPasswordVisible ? "text" : "password"}
+            {...register("password", {
+              required: "A senha é obrigatória",
+              minLength: {
+                value: 6,
+                message: "A senha deve ter pelo menos 6 caracteres",
+              },
+              maxLength: {
+                value: 128,
+                message: "A senha deve ter no máximo 128 caracteres",
+              },
+            })}
+            className="border border-green-300
+          focus:border-green-400 focus:ring-2 focus:ring-green-200
+          hover:border-green-400"
           />
           <span className="absolute top-2 right-3">
             <button
@@ -76,10 +98,8 @@ export default function LoginForm() {
             </button>
           </span>
         </div>
-        {form.formState.errors.password && (
-          <p className="text-red-500 text-sm">
-            {form.formState.errors.password.message}
-          </p>
+        {errors.password && (
+          <p className="text-red-500 mt-1 text-xs">{errors.password.message}</p>
         )}
       </div>
 
@@ -94,9 +114,11 @@ export default function LoginForm() {
 
         <Button
           type="submit"
-          className="bg-green-500 hover:bg-green-500 cursor-pointer w-full text-md"
+          disabled={isSubmitting}
+          className="bg-green-500 hover:bg-green-600 cursor-pointer w-full text-md
+          flex justify-center items-center"
         >
-          Entrar
+          {isSubmitting ? <Loader className="animated-spin" /> : "Entrar"}
         </Button>
 
         <p className="text-cyan-600 mt-2">Não tem uma conta?</p>
