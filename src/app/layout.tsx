@@ -1,5 +1,6 @@
-import "./globals.css";
 import type { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Virtual Vac",
@@ -15,9 +16,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased`}
-      >
+      <body className={`antialiased`}>
+        <Toaster />
         {children}
       </body>
     </html>

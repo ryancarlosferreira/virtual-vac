@@ -1,23 +1,28 @@
 import { z } from "zod";
 
-// IMPROVISADO, FALTA REFORMULAR
-
 export const registerSchema = z
   .object({
-    name: z.string()
-      .min(3, "O nome deve ter pelo menos 3 caracteres")
-      .max(100, "O nome não pode passar de 100 caracteres"),
+    name: z
+      .string()
+      .min(1, "O nome precisa ser preenchido")
+      .max(255, "O nome deve ter no máximo 255 caracteres"),
 
-    email: z.string()
-      .email("Formato de e-mail inválido"),
+    email: z
+      .email("Digite um email válido")
+      .max(255, "O email deve ter no máximo 255 caracteres"),
 
-    phone: z.string()
-      .regex(/^\d{11}$/, "O número de celular deve conter exatamente 11 números"),
+    phone: z
+      .string()
+      .min(1, "O telefone precisa ser preenchido")
+      .regex(/^\(?\d{2}\)?\s?\d{4,5}-\d{4}$/, "Número de telefone inválido"),
 
-    cpf: z.string()
-      .regex(/^\d{11}$/, "O CPF deve conter exatamente 11 números"),
+    cpf: z
+      .string()
+      .min(1, "O CPF precisa ser preenchido")
+      .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "CPF inválido"),
 
-    password: z.string()
+    password: z
+      .string()
       .min(6, "A senha deve ter pelo menos 6 caracteres")
       .max(32, "A senha deve ter no máximo 32 caracteres"),
 
