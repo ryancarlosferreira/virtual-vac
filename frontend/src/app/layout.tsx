@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Virtual Vac",
@@ -16,7 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased`}>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          inter.className
+        )}
+      >
         <Toaster />
         {children}
       </body>

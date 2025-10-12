@@ -19,6 +19,7 @@ import {
   registerSchema,
   RegisterData,
 } from "@/app/_validators/register-validators";
+import api from "@/axios/api";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -46,10 +47,21 @@ export function RegisterForm() {
   };
 
   console.log("Dados normalizados:", normalizedData);
-  // Aqui enviar normalizedData para a API ou salvar no banco
 
-  toast.success("Cadastro realizado com sucesso!");
-  router.replace("/dashboard");
+  // Aqui enviar normalizedData para a API ou salvar no banco
+  try {
+    const response = await api.post("/users/register", normalizedData);
+
+    if (response.status === 201) {
+      toast.success("Cadastro realizado com sucesso!");
+      router.replace("/");
+    } 
+    } catch (error) {
+      console.error("Erro ao cadastrar usuário:", error);
+      toast.error("Erro ao cadastrar usuário. Tente novamente.");
+      return;
+  }
+  
   };
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);

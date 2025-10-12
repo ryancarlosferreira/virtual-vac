@@ -16,6 +16,7 @@ import { useHookFormMask } from "use-mask-input";
 import { Eye, EyeOff, Loader } from "lucide-react";
 
 import { LoginData, loginSchema } from "@/app/_validators/login-validators";
+import api from "@/axios/api";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -31,21 +32,32 @@ export default function LoginForm() {
   const registerWithMask = useHookFormMask(register);
 
   const onSubmit = async (data: LoginData): Promise<void> => {
-  // Remove máscara do CPF
-  const normalizedCpf = data.cpf.replace(/\D/g, "");
+    // Remove máscara do CPF
+    const normalizedCpf = data.cpf.replace(/\D/g, "");
 
-  const normalizedData = {
-    ...data,
-    cpf: normalizedCpf,
+    const normalizedData = {
+      ...data,
+      cpf: normalizedCpf,
+    };
+
+    console.log("Dados normalizados:", normalizedData);
+
+    // Aqui enviar normalizedData para a API ou salvar no banco
+    try {
+      const response = await api.post("/users/login", normalizedData);
+
+      if (response.status === 200) {
+        toast.success("Login realizado com sucesso!");
+        router.replace("/dashboard");
+      } else {
+        toast.error("CPF ou senha incorreto!");
+        return;
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      toast.error("Erro ao fazer login. Tente novamente.");
+    }
   };
-
-  console.log("Dados normalizados:", normalizedData);
-  // Aqui enviar normalizedData para a API ou salvar no banco
-
-  toast.success("Cadastro realizado com sucesso!");
-  router.replace("/dashboard");
-};
-
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
