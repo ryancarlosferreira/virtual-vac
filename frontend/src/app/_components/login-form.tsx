@@ -48,7 +48,7 @@ export default function LoginForm() {
 
       if (response.status === 200) {
         toast.success("Login realizado com sucesso!");
-        router.replace("/dashboard");
+        router.replace("/vaccines");
       } else {
         toast.error("CPF ou senha incorreto!");
         return;
