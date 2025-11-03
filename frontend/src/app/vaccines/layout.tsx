@@ -24,7 +24,6 @@ import {
   LogOut,
   Package,
   PanelBottom,
-  Syringe,
 } from "lucide-react";
 
 export default function VaccinesLayout({
@@ -67,20 +66,6 @@ export default function VaccinesLayout({
                 </Link>
               </TooltipTrigger>
               <TooltipContent side="right">Início</TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href="/vaccines/adultos"
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg
-                  text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  <Syringe className="h5 w-5" />
-                  <span className="sr-only">Adultos</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">Adultos</TooltipContent>
             </Tooltip>
 
             <Tooltip>
@@ -148,10 +133,9 @@ export default function VaccinesLayout({
 
             <SheetContent
               side="left"
-              className="sm:max-w-xs 
-            bg-gradient-to-bl from-green-200 via-white to-green-100"
+              className="sm:max-w-xs h-full flex flex-col"
             >
-              <SheetHeader>
+              <SheetHeader className="flex flex-col h-full">
                 <SheetTitle className="flex items-center gap-2 mb-2 text-green-500 text-2xl">
                   <Link
                     href="/vaccines"
@@ -169,15 +153,15 @@ export default function VaccinesLayout({
                   </Link>
                   <Link href="/vaccines">Virtual VAC</Link>
                 </SheetTitle>
-                <SheetDescription className="text-cyan-600 mb-1 ml-1">
+                <SheetDescription className="mt-4 text-cyan-600 mb-1 ml-1">
                   Escolha uma opção de cartão:
                 </SheetDescription>
 
                 <nav className="grid gap-4 text-lg font-medium">
                   <Link
                     href="/vaccines"
-                    className="flex items-center gap-4 px-2.5 p-2 text-cyan-600
-                    hover:border-green-400 border border-green-200 shadow-md rounded-md bg-white"
+                    className="flex items-center gap-4 px-2.5 p-2 text-cyan-600 border
+                    border-green-200 shadow-md rounded-md bg-white"
                     prefetch={false}
                   >
                     <Home className="h-5 w-5 transition-all" />
@@ -186,20 +170,9 @@ export default function VaccinesLayout({
                   </Link>
 
                   <Link
-                    href="/vaccines/adultos"
-                    className="flex items-center gap-4 px-2.5 p-2 text-cyan-600
-                    hover:border-green-400 border border-green-200 shadow-md rounded-md bg-white"
-                    prefetch={false}
-                  >
-                    <Syringe className="h-5 w-5 transition-all" />
-                    Adultos
-                    <span className="sr-only">Adultos</span>
-                  </Link>
-
-                  <Link
                     href="/vaccines/gestantes"
-                    className="flex items-center gap-4 px-2.5 p-2 text-cyan-600
-                    hover:border-green-400 border border-green-200 shadow-md rounded-md bg-white"
+                    className="flex items-center gap-4 px-2.5 p-2 text-cyan-600 border
+                    border-green-200 shadow-md rounded-md bg-white"
                     prefetch={false}
                   >
                     <HeartPulse className="h-5 w-5 transition-all" />
@@ -209,8 +182,8 @@ export default function VaccinesLayout({
 
                   <Link
                     href="/vaccines/infantis"
-                    className="flex items-center gap-4 px-2.5 p-2 text-cyan-600
-                    hover:border-green-400 border border-green-200 shadow-md rounded-md bg-white"
+                    className="flex items-center gap-4 px-2.5 p-2 text-cyan-600 border
+                    border-green-200 shadow-md rounded-md bg-white"
                     prefetch={false}
                   >
                     <Baby className="h-5 w-5 transition-all" />
@@ -222,8 +195,8 @@ export default function VaccinesLayout({
                 <nav className="mt-auto flex flex-col gap-4 py-5">
                   <Link
                     href="#"
-                    className="flex h-9 w-9 shrink-0 items-center justify-center
-                    hover:border-red-400 border border-red-200 shadow-md rounded-md bg-white"
+                    className="flex h-9 w-9 items-center justify-center border border-red-200
+                    shadow-md rounded-md bg-white"
                   >
                     <LogOut className="h5 w-5 text-red-500" />
                     <span className="sr-only">Sair</span>

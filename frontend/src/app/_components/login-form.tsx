@@ -12,7 +12,6 @@ import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@hookform/error-message";
-import { useHookFormMask } from "use-mask-input";
 import { Eye, EyeOff, Loader } from "lucide-react";
 
 import { LoginData, loginSchema } from "@/app/_validators/login-validators";
@@ -29,28 +28,22 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  const registerWithMask = useHookFormMask(register);
-
   const onSubmit = async (data: LoginData): Promise<void> => {
-    // Remove máscara do CPF
-    const normalizedCpf = data.cpf.replace(/\D/g, "");
-
-    const normalizedData = {
-      ...data,
-      cpf: normalizedCpf,
-    };
-
-    console.log("Dados normalizados:", normalizedData);
-
-    // Aqui enviar normalizedData para a API ou salvar no banco
     try {
-      const response = await api.post("/users/login", normalizedData);
+      // detecta domínio de email de administrador
+      const isAdmin = data.email?.toLowerCase().endsWith("@hospital.com");
+
+      // envia payload com um indicativo de role (backend deve respeitar)
+      const payload = { ...data, role: isAdmin ? "admin" : "user" };
+
+      const response = await api.post("/users/login", payload);
 
       if (response.status === 200) {
         toast.success("Login realizado com sucesso!");
-        router.replace("/vaccines");
+        // redireciona conforme papel detectado
+        router.replace(isAdmin ? "/admin" : "/vaccines");
       } else {
-        toast.error("CPF ou senha incorreto!");
+        toast.error("Email ou senha incorreto!");
         return;
       }
     } catch (error) {
@@ -67,21 +60,21 @@ export default function LoginForm() {
     >
       <p className="text-cyan-600 font-semibold text-2xl mb-2">Login</p>
 
-      {/* input cpf */}
+      {/* input email */}
       <div className="w-full">
-        <Label htmlFor="cpf" className="mb-1 text-cyan-600">
-          CPF:
+        <Label htmlFor="email" className="mb-1 text-cyan-600">
+          Email:
         </Label>
         <Input
           id="cpf"
           type="text"
-          {...registerWithMask("cpf", "999.999.999-99")}
+          {...register("email")}
           className="border border-green-300
           focus:border-green-400 focus:ring-2 focus:ring-green-200
           hover:border-green-400"
         />
         <p className="text-red-500 mt-1 text-xs">
-          <ErrorMessage errors={errors} name="cpf" />
+          <ErrorMessage errors={errors} name="email" />
         </p>
       </div>
 

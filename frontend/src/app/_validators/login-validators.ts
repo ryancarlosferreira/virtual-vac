@@ -1,10 +1,9 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  cpf: z
-    .string()
-    .min(1, "Digite seu CPF")
-    .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "CPF inválido"),
+  email: z
+      .email("Digite um email válido")
+      .max(255, "O email deve ter no máximo 255 caracteres"),
 
   password: z
     .string()

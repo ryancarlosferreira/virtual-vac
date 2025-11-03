@@ -39,9 +39,9 @@ public class UserService {
         return repository.save(user);
     }
 
-    // Validação de login (CPF + senha)
+    // Validação de login (Email + senha)
     public boolean authenticate(LoginRequest request) {
-        User user = repository.findByCpf(request.cpf())
+        User user = repository.findByEmail(request.email())
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
 
         return passwordEncoder.matches(request.password(), user.getPassword());

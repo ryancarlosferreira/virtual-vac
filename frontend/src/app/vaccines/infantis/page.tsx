@@ -19,16 +19,15 @@ export default function Infantis() {
                 BCG
               </CardTitle>
             </div>
+          </CardHeader>
 
-            <CardDescription>
+          <CardContent className="mt-auto">
+            <CardDescription className="mb-2">
               <div className="inline-flex items-center justify-center gap-2">
                 <Circle className="bg-green-600 ml-auto w-4 h-4 rounded-full" />
                 <h1>Em dia</h1>
               </div>
             </CardDescription>
-          </CardHeader>
-
-          <CardContent>
             <Button variant="outline" size="sm">
               Ver Detalhes
             </Button>
@@ -42,16 +41,15 @@ export default function Infantis() {
                 Hepatite B
               </CardTitle>
             </div>
+          </CardHeader>
 
-             <CardDescription>
+          <CardContent className="mt-auto">
+            <CardDescription className="mb-2">
               <div className="inline-flex items-center justify-center gap-2">
                 <Circle className="bg-green-600 ml-auto w-4 h-4 rounded-full" />
                 <h1>Em dia</h1>
               </div>
             </CardDescription>
-          </CardHeader>
-
-          <CardContent>
             <Button variant="outline" size="sm">
               Ver Detalhes
             </Button>
@@ -65,16 +63,15 @@ export default function Infantis() {
                 Pentavalente
               </CardTitle>
             </div>
+          </CardHeader>
 
-             <CardDescription>
+          <CardContent className="mt-auto">
+            <CardDescription className="mb-2">
               <div className="inline-flex items-center justify-center gap-2">
                 <Circle className="bg-green-600 ml-auto w-4 h-4 rounded-full" />
                 <h1>Em dia</h1>
               </div>
             </CardDescription>
-          </CardHeader>
-
-          <CardContent>
             <Button variant="outline" size="sm">
               Ver Detalhes
             </Button>
@@ -88,23 +85,20 @@ export default function Infantis() {
                 VIP - Poliomielite
               </CardTitle>
             </div>
+          </CardHeader>
 
-             <CardDescription>
+          <CardContent className="mt-auto">
+            <CardDescription className="mb-2">
               <div className="inline-flex items-center justify-center gap-2">
                 <Circle className="bg-red-600 ml-auto w-4 h-4 rounded-full" />
                 <h1>Pendente</h1>
               </div>
             </CardDescription>
-          </CardHeader>
-
-          <CardContent>
             <Button variant="outline" size="sm">
               Ver Detalhes
             </Button>
           </CardContent>
         </Card>
-
-        
       </section>
     </main>
   );
