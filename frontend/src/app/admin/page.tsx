@@ -1,10 +1,10 @@
-export default function Admin() {
-    return (
-      <main>
-        <section className="p-4">
-          <h1 className="text-2xl font-semibold text-gray-700 mb-4">Admin Dashboard</h1>
-          <p>Bem-vindo ao painel de administração. Aqui você pode gerenciar usuários, visualizar relatórios e configurar o sistema.</p>
-        </section>
-      </main>
-    );
+import AdminForm from "../_components/admin-form";
+
+export default function VaccineRegister() {
+  return (
+    <main className="flex flex-col min-h-screen w-full pt-20
+      bg-gradient-to-bl from-green-200 via-white to-green-100">
+      <AdminForm />
+    </main>
+  );
 }
