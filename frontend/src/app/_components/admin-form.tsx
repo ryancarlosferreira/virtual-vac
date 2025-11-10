@@ -48,9 +48,24 @@ export default function AdminForm() {
   const registerWithMask = useHookFormMask(register);
 
   const onSubmit = async (data: AdminData): Promise<void> => {
+  // Remove máscara do CPF
+  const normalizedCpf = data.cpf.replace(/\D/g, "");
+
     console.log("Dados do formulário:", data);
+    // Monta payload exatamente conforme o DTO VaccineCardRequest
+    const payload = {
+      name: data.name,
+      cpf: normalizedCpf,
+      date: data.date, // formato já está DD/MM/YYYY por mask
+      vaccineName: data.vaccineName,
+      interval: data.interval,
+      intervalCustom: data.intervalCustom,
+      category: data.category,
+      dose: data.dose,
+      observations: data.observations,
+    };
     try {
-      const response = await api.post("/admin/vaccineCard", data);
+      const response = await api.post("/vaccine-card", payload);
       if (response.status === 201) {
         toast.success("Vacina registrada com sucesso!");
       } else {
