@@ -4,13 +4,10 @@ services:
     container_name: virtual_vac_nginx
     ports:
       - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - frontend
       - backend
     restart: always
-    
 
   frontend:
     build: ./frontend
@@ -18,11 +15,12 @@ services:
     ports:
       - "3000:3000"
     restart: always
-    
 
   backend:
     build: ./backend
     container_name: virtual_vac_backend
     env_file:
       - ./backend/.env
+    ports:
+      - "8080:8080"
     restart: always
