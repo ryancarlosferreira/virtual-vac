@@ -103,7 +103,7 @@ export default function VaccinesLayout({
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
-                  href="#"
+                  href="/"
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg
                   text-muted-foreground transition-colors hover:text-foreground"
                 >
@@ -194,7 +194,7 @@ export default function VaccinesLayout({
 
                 <nav className="mt-auto flex flex-col gap-4 py-5">
                   <Link
-                    href="#"
+                    href="/"
                     className="flex h-9 w-9 items-center justify-center border border-red-200
                     shadow-md rounded-md bg-white"
                   >
