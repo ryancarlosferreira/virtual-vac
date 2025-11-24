@@ -54,6 +54,10 @@ public class VaccineCardService {
     }
 
     public List<VaccineCard> listByVaccineName(String vaccineName) {
-    return cardRepository.findByVaccineNameIgnoreCase(vaccineName);
-}
+        return cardRepository.findByVaccineNameIgnoreCase(vaccineName);
+    }
+
+    public List<VaccineCard> listByCpf(String cpf) {
+        return cardRepository.findByCpf(cpf);
+    }
 }

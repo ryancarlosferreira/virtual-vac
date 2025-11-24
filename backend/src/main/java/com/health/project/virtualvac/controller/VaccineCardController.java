@@ -7,12 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.security.core.Authentication;
 
 /*
  Controller REST:
- - POST /api/vaccine-cards      -> cria novo registro (payload do frontend)
- - GET  /api/vaccine-cards      -> lista todos
- - GET  /api/vaccine-cards/vaccine/{name} -> lista por vacina (usada na tela de detalhes)
+ - POST /api/vaccine-card      -> cria novo registro (payload do frontend)
+ - GET  /api/vaccine-card      -> lista todos
+ - GET  /api/vaccine-card/vaccine/{name} -> lista por vacina (usada na tela de detalhes)
+ - GET  /api/vaccine-card/mine -> lista apenas do usuário autenticado
 */
 @RestController
 @RequestMapping("/api/vaccine-card")
@@ -24,22 +26,26 @@ public class VaccineCardController {
         this.service = service;
     }
 
-    // Criar um novo registro de vacina (recebe o DTO do frontend)
     @PostMapping
     public ResponseEntity<VaccineCard> create(@RequestBody VaccineCardRequest req) {
         VaccineCard saved = service.createFromRequest(req);
         return ResponseEntity.status(201).body(saved);
     }
 
-    // Listar todos os registros
     @GetMapping
     public List<VaccineCard> getAll() {
         return service.listAll();
     }
 
-    // Listar por vacina (name)
     @GetMapping("/vaccine/{name}")
     public List<VaccineCard> getByVaccineName(@PathVariable String name) {
         return service.listByVaccineName(name);
+    }
+
+    // Retorna apenas os cartões do usuário autenticado (subject do token = cpf)
+    @GetMapping("/mine")
+    public List<VaccineCard> getMine(Authentication auth) {
+        String cpf = auth.getName(); // subject do token será o CPF (ver login)
+        return service.listByCpf(cpf);
     }
 }
