@@ -1,3 +1,4 @@
+import VaccineContentClient from './VaccineContentClient';
 import {
   Sheet,
   SheetTrigger,
@@ -32,6 +33,7 @@ export default function VaccinesLayout({
   children: React.ReactNode;
 }) {
   return (
+    <VaccineContentClient>
     <div
       className="flex flex-col min-h-screen w-full
       bg-gradient-to-bl from-green-200 via-white to-green-100"
@@ -210,5 +212,6 @@ export default function VaccinesLayout({
       </div>
       <main className="sm:ml-14 p-4 w-full">{children}</main>
     </div>
+    </VaccineContentClient>
   );
 }
