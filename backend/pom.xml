@@ -124,6 +124,13 @@
             <version>2.1.2</version>
         </dependency>
 
+        <!-- Rate Limiting com Bucket4j -->
+        <dependency>
+            <groupId>com.bucket4j</groupId>
+            <artifactId>bucket4j-core</artifactId>
+            <version>8.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

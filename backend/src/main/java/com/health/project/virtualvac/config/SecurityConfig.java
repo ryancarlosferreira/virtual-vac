@@ -1,6 +1,7 @@
 package com.health.project.virtualvac.config;
 
 import com.health.project.virtualvac.security.JwtAuthenticationFilter;
+import com.health.project.virtualvac.security.RateLimitFilter; // Ensure this import is present
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +22,11 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtFilter;
+    private final RateLimitFilter rateLimitFilter;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtFilter) {
+    public SecurityConfig(JwtAuthenticationFilter jwtFilter, RateLimitFilter rateLimitFilter) {
         this.jwtFilter = jwtFilter;
+        this.rateLimitFilter = rateLimitFilter;
     }
 
     @Bean
@@ -48,6 +51,7 @@ public class SecurityConfig {
                 .authenticationEntryPoint((req, res, authEx) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .accessDeniedHandler((req, res, accessEx) -> res.sendError(HttpServletResponse.SC_FORBIDDEN))
             )
+            .addFilterBefore(rateLimitFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -61,11 +65,22 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost"));
+        
+        // Em desenvolvimento
+        cfg.setAllowedOrigins(List.of(
+            "http://localhost:3000", 
+            "http://localhost",
+            "http://127.0.0.1:3000"
+        ));
+        
+        // Em produção, substitua por:
+        // cfg.setAllowedOrigins(List.of("https://seudominio.com"));
+        
         cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        cfg.setAllowedHeaders(List.of("*"));
+        cfg.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));
         cfg.setAllowCredentials(true);
-        cfg.setExposedHeaders(List.of("Set-Cookie"));
+        cfg.setExposedHeaders(List.of("Authorization"));
+        cfg.setMaxAge(3600L); // Cache preflight por 1 hora
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", cfg);
