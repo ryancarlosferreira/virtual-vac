@@ -30,18 +30,17 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginData): Promise<void> => {
     try {
-      // detecta domínio de email de administrador
-      const isAdmin = data.email?.toLowerCase().endsWith("@hospital.com");
-
-      // envia payload com um indicativo de role (backend deve respeitar)
-      const payload = { ...data, role: isAdmin ? "admin" : "user" };
-
-      const response = await api.post("/users/login", payload);
+      // Remove detecção de admin no frontend - agora vem do backend
+      const response = await api.post("/users/login", data);
 
       if (response.status === 200) {
         toast.success("Login realizado com sucesso!");
-        // redireciona conforme papel detectado
-        router.replace(isAdmin ? "/admin" : "/vaccines");
+        
+        // Obtém role do backend
+        const userRole = response.data.role;
+        
+        // Redireciona conforme role retornado pelo BACKEND
+        router.replace(userRole === "ADMIN" ? "/admin" : "/vaccines");
       } else {
         toast.error("Email ou senha incorreto!");
         return;

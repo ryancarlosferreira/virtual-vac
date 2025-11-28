@@ -35,6 +35,13 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.password()));
         user.setEmail(request.email());
         user.setPhone(request.phone());
+        
+        // Define role baseado no domínio do email - BACKEND VALIDATION
+        if (request.email() != null && request.email().toLowerCase().endsWith("@hospital.com")) {
+            user.setRole(com.health.project.virtualvac.model.Role.ADMIN);
+        } else {
+            user.setRole(com.health.project.virtualvac.model.Role.USER);
+        }
 
         return repository.save(user);
     }

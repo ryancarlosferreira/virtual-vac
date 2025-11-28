@@ -54,11 +54,12 @@ public class UserController {
             // autentica via AuthenticationManager (UserDetailsService deve existir)
             authManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
-            // busca usuário para obter CPF (subject)
+            // busca usuário para obter CPF (subject) e ROLE
             User user = userRepo.findByEmail(request.email())
                     .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-            String token = jwtUtil.generateToken(user.getCpf());
+            // Gera token incluindo role no JWT
+            String token = jwtUtil.generateToken(user.getCpf(), user.getRole().name());
 
             ResponseCookie cookie = ResponseCookie.from("token", token)
                     .httpOnly(true)
@@ -67,11 +68,12 @@ public class UserController {
                     .sameSite("Lax")
                     .build();
 
+            // Retorna mensagem e role para o frontend
             return ResponseEntity.ok().header("Set-Cookie", cookie.toString())
-                    .body(new LoginResponse("Login realizado com sucesso!"));
+                    .body(new LoginResponse("Login realizado com sucesso!", user.getRole().name()));
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new LoginResponse("E-mail ou senha incorretos!"));
+                    .body(new LoginResponse("E-mail ou senha incorretos!", null));
         }
     }
 }

@@ -6,6 +6,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -14,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Filtro que valida JWT e popula o SecurityContext.
@@ -49,8 +51,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (token != null && jwtUtil.validate(token) && SecurityContextHolder.getContext().getAuthentication() == null) {
             String subject = jwtUtil.extractSubject(token);
+            String role = jwtUtil.extractRole(token);
+            
             var userDetails = userDetailsService.loadUserByUsername(subject);
-            var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            
+            // Cria authorities baseado no role do token
+            var authorities = role != null ? List.of(new SimpleGrantedAuthority("ROLE_" + role)) : userDetails.getAuthorities();
+            
+            var auth = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
