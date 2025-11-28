@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const PUBLIC_PATHS = [
-  "/",
-  "/login",
   "/signup",
   "/forgot",
   "/api",
@@ -13,7 +11,8 @@ const PUBLIC_PATHS = [
 ];
 
 // Função para decodificar JWT (sem validar assinatura - backend fará isso)
-function decodeJWT(token: string) {
+function decodeJWT(token?: string | null) {
+  if (!token) return null;
   try {
     const payload = token.split(".")[1];
     return JSON.parse(atob(payload));
@@ -31,12 +30,25 @@ export function middleware(req: NextRequest) {
 
   const token = req.cookies.get("token")?.value;
 
-  // Redireciona para login se não tiver token
-  if (!token) {
+  // Se o usuário está autenticado e tenta acessar a raiz ou login, redireciona
+  if (token && (pathname === "/" || pathname === "/login")) {
+    const decoded = decodeJWT(token);
+    const userRole = decoded?.role || "USER";
+    const redirectUrl = userRole === "ADMIN" ? "/admin" : "/vaccines";
+    return NextResponse.redirect(new URL(redirectUrl, req.url));
+  }
+
+  // Redireciona para login se não tiver token e não for rota pública
+  if (!token && pathname !== "/" && pathname !== "/login") {
     const url = req.nextUrl.clone();
-    url.pathname = "/login";
+    url.pathname = "/";
     url.search = `from=${encodeURIComponent(pathname)}`;
     return NextResponse.redirect(url);
+  }
+
+  // Se não tiver token, permite acesso à raiz/login
+  if (!token) {
+    return NextResponse.next();
   }
 
   // Decodifica token para verificar role
@@ -60,5 +72,10 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/vaccines/:path*", "/profile/:path*"],
+  matcher: [
+    "/login",
+    "/admin/:path*",
+    "/vaccines/:path*",
+    "/profile/:path*",
+  ],
 };

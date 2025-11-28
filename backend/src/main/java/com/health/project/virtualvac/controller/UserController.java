@@ -76,4 +76,19 @@ public class UserController {
                     .body(new LoginResponse("E-mail ou senha incorretos!", null));
         }
     }
+
+    // Logout: remove o cookie HttpOnly
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        ResponseCookie cookie = ResponseCookie.from("token", "")
+                .httpOnly(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Lax")
+                .build();
+
+        return ResponseEntity.ok()
+                .header("Set-Cookie", cookie.toString())
+                .body("Logout realizado com sucesso!");
+    }
 }

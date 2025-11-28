@@ -35,10 +35,10 @@ export default function LoginForm() {
 
       if (response.status === 200) {
         toast.success("Login realizado com sucesso!");
-        
+
         // Obtém role do backend
         const userRole = response.data.role;
-        
+
         // Redireciona conforme role retornado pelo BACKEND
         router.replace(userRole === "ADMIN" ? "/admin" : "/vaccines");
       } else {
@@ -65,7 +65,7 @@ export default function LoginForm() {
           Email:
         </Label>
         <Input
-          id="cpf"
+          id="email"
           type="text"
           {...register("email")}
           className="border border-green-300

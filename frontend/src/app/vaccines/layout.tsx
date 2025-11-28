@@ -1,3 +1,5 @@
+"use client";
+
 import VaccineContentClient from './VaccineContentClient';
 import {
   Sheet,
@@ -26,6 +28,8 @@ import {
   Package,
   PanelBottom,
 } from "lucide-react";
+
+import { logout } from "@/lib/auth";
 
 export default function VaccinesLayout({
   children,
@@ -104,14 +108,14 @@ export default function VaccinesLayout({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link
-                  href="/"
+                <button
+                  onClick={logout}
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg
-                  text-muted-foreground transition-colors hover:text-foreground"
+                  text-muted-foreground transition-colors hover:text-foreground cursor-pointer"
                 >
                   <LogOut className="h5 w-5 text-red-500" />
                   <span className="sr-only">Sair</span>
-                </Link>
+                </button>
               </TooltipTrigger>
               <TooltipContent side="right">Sair</TooltipContent>
             </Tooltip>
@@ -195,14 +199,14 @@ export default function VaccinesLayout({
                 </nav>
 
                 <nav className="mt-auto flex flex-col gap-4 py-5">
-                  <Link
-                    href="/"
+                  <button
+                    onClick={logout}
                     className="flex h-9 w-9 items-center justify-center border border-red-200
-                    shadow-md rounded-md bg-white"
+                    shadow-md rounded-md bg-white cursor-pointer"
                   >
                     <LogOut className="h5 w-5 text-red-500" />
                     <span className="sr-only">Sair</span>
-                  </Link>
+                  </button>
                 </nav>
               </SheetHeader>
             </SheetContent>

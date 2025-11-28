@@ -38,7 +38,7 @@ public class SecurityConfig {
             // desabilita autenticação anônima para que qualquerRequest().authenticated() rejeite sem token
             .anonymous(an -> an.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/register", "/api/users/login", "/api/auth/**").permitAll()
+                .requestMatchers("/api/users/register", "/api/users/login", "/api/users/logout", "/api/auth/**").permitAll()
                 .requestMatchers("/actuator/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 // Endpoints administrativos - requer role ADMIN
                 .requestMatchers("/api/users", "/api/users/**").hasRole("ADMIN")
